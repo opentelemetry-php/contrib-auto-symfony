@@ -40,7 +40,11 @@ final class SymfonyInstrumentation
                 /** @psalm-suppress ArgumentTypeCoercion */
                 $builder = $instrumentation
                     ->tracer()
-                    ->spanBuilder(\sprintf('HTTP %s', $request?->getMethod() ?? 'unknown'))
+                    ->spanBuilder(\sprintf(
+                        'server request HTTP %s %s',
+                        $request?->getMethod() ?? 'unknown',
+                        $request?->getUri() ?? 'unknown'
+                    ))
                     ->setSpanKind(SpanKind::KIND_SERVER)
                     ->setAttribute(TraceAttributes::CODE_FUNCTION, $function)
                     ->setAttribute(TraceAttributes::CODE_NAMESPACE, $class)
